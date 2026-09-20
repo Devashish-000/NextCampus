@@ -1,0 +1,204 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  
+  /* High-Contrast Professional SaaS Text Color System */
+  --color-text-dark: #0F172A;      /* Slate 900 - H1, H2, H3, Key Headings */
+  --color-text-secondary: #334155; /* Slate 700 - Body Copy, Paragraphs */
+  --color-text-muted: #475569;     /* Slate 600 - Subtitles, Badges, Captions */
+  
+  --color-primary: #4F46E5;
+  --color-primary-hover: #4338CA;
+  --color-accent-purple: #7C3AED;
+  --color-accent-emerald: #059669;
+  
+  --gradient-primary: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  --card-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  --card-shadow-hover: 0 20px 40px rgba(79, 70, 229, 0.16);
+  --section-padding: 100px;
+}
+
+/* RICH MULTI-TONE VIBRANT BACKGROUND WITH AURORA MESH */
+body {
+  font-family: var(--font-sans);
+  background-color: #F1F5F9;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.18) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(124, 58, 237, 0.16) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(59, 130, 246, 0.12) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(16, 185, 129, 0.12) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.10) 0px, transparent 50%);
+  background-attachment: fixed;
+  color: var(--color-text-secondary);
+  font-size: 0.9375rem; /* 15px */
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* HIGH-END TECH GRID & NETWORKS PATTERN */
+.bg-tech-grid {
+  background-image: 
+    linear-gradient(to right, rgba(99, 102, 241, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(99, 102, 241, 0.07) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* 1. TYPOGRAPHY SYSTEM OVERHAUL */
+h1, .h1, .display-4, .display-5, .display-6 {
+  font-family: var(--font-heading);
+  font-weight: 800 !important;
+  color: var(--color-text-dark) !important;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+h2, .h2 {
+  font-family: var(--font-heading);
+  font-weight: 800 !important;
+  color: var(--color-text-dark) !important;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+h3, .h3 {
+  font-family: var(--font-sans);
+  font-weight: 700 !important;
+  color: var(--color-text-dark) !important;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+}
+
+h4, .h4, h5, .h5, h6, .h6 {
+  font-family: var(--font-sans);
+  font-weight: 700 !important;
+  color: var(--color-text-dark) !important;
+  line-height: 1.35;
+}
+
+p, .lead {
+  color: var(--color-text-secondary);
+}
+
+.lead {
+  font-size: 1.125rem !important; /* 18px */
+  line-height: 1.75 !important;
+  color: var(--color-text-secondary) !important;
+  font-weight: 500 !important;
+}
+
+.text-muted {
+  color: var(--color-text-muted) !important;
+}
+
+.text-dark {
+  color: var(--color-text-dark) !important;
+}
+
+.text-secondary {
+  color: var(--color-text-secondary) !important;
+}
+
+/* Gradient Text Mark */
+.gradient-text-saas {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 2. BUTTON SYSTEM */
+.btn-saas-primary {
+  background: var(--gradient-primary) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 0.875rem !important; /* 14px */
+  padding: 0.625rem 1.25rem !important;
+  font-weight: 700 !important;
+  font-size: 0.875rem !important;
+  box-shadow: 0 4px 15px rgba(79, 70, 229, 0.25) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.btn-saas-primary:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(79, 70, 229, 0.35) !important;
+  color: #ffffff !important;
+}
+
+.btn-saas-compare {
+  background-color: #ffffff !important;
+  color: #4F46E5 !important;
+  border: 1px solid #C7D2FE !important;
+  border-radius: 0.875rem !important;
+  padding: 0.625rem 1.25rem !important;
+  font-weight: 700 !important;
+  font-size: 0.875rem !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.btn-saas-compare:hover {
+  background-color: #4F46E5 !important;
+  color: #ffffff !important;
+  border-color: #4F46E5 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.25) !important;
+}
+
+.btn-saas-compare:hover * {
+  color: #ffffff !important;
+}
+
+/* 3. CARD & SECTION SPACING SYSTEM WITH GLASS & ELEVATION */
+.saas-section {
+  padding-top: var(--section-padding);
+  padding-bottom: var(--section-padding);
+  position: relative;
+}
+
+.saas-card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(203, 213, 225, 0.8);
+  border-radius: 1.25rem; /* 20px */
+  padding: 1.5rem; /* 24px */
+  box-shadow: var(--card-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.saas-card-hover:hover {
+  transform: translateY(-4px);
+  border-color: rgba(99, 102, 241, 0.5);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.glass-navbar {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+}
