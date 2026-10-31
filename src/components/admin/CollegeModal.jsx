@@ -37,6 +37,17 @@ export const CollegeModal = ({ isOpen, onClose, onSave, editingCollege }) => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData({ ...formData, logo: reader.result, image: reader.result }); // Use uploaded pic for both logo and cover
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave(formData);
@@ -74,8 +85,11 @@ export const CollegeModal = ({ isOpen, onClose, onSave, editingCollege }) => {
               <input required type="number" name="nirfRank" value={formData.nirfRank} onChange={handleChange} className="form-control rounded-xl border-gray-300" placeholder="e.g. 1" />
             </div>
             <div className="space-y-1 text-start">
-              <label className="text-xs font-bold text-gray-700 uppercase">Logo URL</label>
-              <input type="text" name="logo" value={formData.logo} onChange={handleChange} className="form-control rounded-xl border-gray-300" placeholder="https://..." />
+              <label className="text-xs font-bold text-gray-700 uppercase">College Picture / Logo</label>
+              <input type="file" accept="image/*" onChange={handleImageUpload} className="form-control rounded-xl border-gray-300 p-1.5" />
+              {formData.logo && formData.logo.length > 100 && (
+                <span className="text-[10px] text-emerald-600 font-bold">Image attached!</span>
+              )}
             </div>
             <div className="space-y-1 text-start">
               <label className="text-xs font-bold text-gray-700 uppercase">Total Fees</label>

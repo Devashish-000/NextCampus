@@ -25,7 +25,6 @@ const AdminReviewsPage = lazy(() => import('../pages/AdminReviewsPage').then((m)
 const AdminScholarshipsPage = lazy(() => import('../pages/AdminScholarshipsPage').then((m) => ({ default: m.AdminScholarshipsPage })));
 const AdminPlacementsPage = lazy(() => import('../pages/AdminPlacementsPage').then((m) => ({ default: m.AdminPlacementsPage })));
 const AdminNotificationsPage = lazy(() => import('../pages/AdminNotificationsPage').then((m) => ({ default: m.AdminNotificationsPage })));
-const AdminPredictorDataPage = lazy(() => import('../pages/AdminPredictorDataPage').then((m) => ({ default: m.AdminPredictorDataPage })));
 const InstituteDashboardPage = lazy(() => import('../pages/InstituteDashboardPage').then((m) => ({ default: m.InstituteDashboardPage })));
 const LoginPage = lazy(() => import('../pages/LoginPage').then((m) => ({ default: m.LoginPage })));
 const RegisterPage = lazy(() => import('../pages/RegisterPage').then((m) => ({ default: m.RegisterPage })));
@@ -59,6 +58,7 @@ export const AppRoutes = () => {
           <Route path={ROUTES.PLACEMENTS} element={<PlacementsPage />} />
           <Route path={ROUTES.RANKINGS} element={<RankingsPage />} />
           <Route path={ROUTES.REVIEWS} element={<ReviewsPage />} />
+          <Route path={ROUTES.RECOMMENDATIONS} element={<RecommendationsPage />} />
           <Route path={ROUTES.COMPARE} element={<CompareCollegesPage />} />
           <Route path={ROUTES.FORBIDDEN} element={<ForbiddenPage />} />
           <Route path={ROUTES.SERVER_ERROR} element={<ServerErrorPage />} />
@@ -122,19 +122,20 @@ export const AppRoutes = () => {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/dashboard/predictor"
-            element={
-              <ProtectedRoute allowedRoles={['admin']}>
-                <AdminPredictorDataPage />
-              </ProtectedRoute>
-            }
-          />
+
           <Route
             path="/dashboard/notifications"
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminNotificationsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={ROUTES.ADMIN_PREDICTOR}
+            element={
+              <ProtectedRoute>
+                <RecommendationsPage />
               </ProtectedRoute>
             }
           />
@@ -154,14 +155,7 @@ export const AppRoutes = () => {
               </ProtectedRoute>
             }
           />
-          <Route
-            path={ROUTES.RECOMMENDATIONS}
-            element={
-              <ProtectedRoute>
-                <RecommendationsPage />
-              </ProtectedRoute>
-            }
-          />
+
           <Route
             path={ROUTES.NOTIFICATIONS}
             element={

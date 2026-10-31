@@ -61,7 +61,12 @@ export const ReviewsPage = () => {
 
   const onSubmitReview = async (data) => {
     try {
-      const added = await reviewService.addReview(data);
+      const selectedCollege = ALL_MOCK_COLLEGES.find(c => c.id === data.collegeId);
+      const enhancedData = {
+        ...data,
+        collegeName: selectedCollege ? selectedCollege.name : 'Selected College'
+      };
+      const added = await reviewService.addReview(enhancedData);
       setReviews([added, ...reviews]);
       toast.success('Review submitted successfully for moderation!');
       setIsModalOpen(false);

@@ -4,6 +4,7 @@ import { FiMapPin, FiStar, FiBookmark, FiPlus, FiCheck, FiAward, FiCheckCircle, 
 import { collegeService } from '../services/collegeService';
 import { reviewService } from '../services/reviewService';
 import { ReviewCard } from '../features/reviews/ReviewCard';
+import { ApplyLeadModal } from '../components/features/colleges/ApplyLeadModal';
 import { formatCurrency } from '../utils/formatters';
 import { useSavedColleges } from '../context/SavedCollegesContext';
 import { useComparison } from '../context/ComparisonContext';
@@ -15,6 +16,7 @@ export const CollegeDetailsPage = () => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
 
   const { savedIds, toggleSaveCollege } = useSavedColleges();
   const { comparedColleges, addToCompare, removeFromCompare } = useComparison();
@@ -94,6 +96,15 @@ export const CollegeDetailsPage = () => {
 
             {/* Action CTAs */}
             <div className="d-flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => setIsApplyModalOpen(true)}
+                className="btn btn-sm text-xs font-black px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-indigo-500/40 d-inline-flex items-center gap-1.5 bg-gradient-to-r from-indigo-500 via-indigo-600 to-purple-600 text-white hover:scale-105 active:scale-95 border-0"
+              >
+                <FiZap className="w-3.5 h-3.5 fill-amber-300 text-amber-300" />
+                <span>Apply / Inquire</span>
+              </button>
+
               <button
                 type="button"
                 onClick={() => toggleSaveCollege(college.id, college.shortName)}
@@ -268,10 +279,17 @@ export const CollegeDetailsPage = () => {
                 <p className="mb-0">📞 Admission Helpline: 1800-425-9988</p>
               </div>
 
-              <div className="pt-2">
-                <Link to={ROUTES.RECOMMENDATIONS} className="btn btn-saas-primary w-100 text-xs py-2.5 font-extrabold text-decoration-none d-flex items-center justify-center gap-2 shadow-lg">
-                  <span>Check Admission Eligibility</span>
+              <div className="pt-2 space-y-2">
+                <button
+                  type="button"
+                  onClick={() => setIsApplyModalOpen(true)}
+                  className="btn btn-saas-primary w-100 text-xs py-2.5 font-black d-flex items-center justify-center gap-2 shadow-lg"
+                >
                   <FiZap className="w-3.5 h-3.5 text-amber-300 fill-amber-300" />
+                  <span>Apply for Admission</span>
+                </button>
+                <Link to={ROUTES.SCHOLARSHIPS} className="btn btn-outline-light w-100 text-xs py-2 font-bold text-decoration-none d-flex items-center justify-center gap-2">
+                  <span>Explore Scholarships</span>
                 </Link>
               </div>
             </div>
@@ -279,6 +297,13 @@ export const CollegeDetailsPage = () => {
 
         </div>
       </div>
+
+      {/* Student Application & Inquiry Lead Modal */}
+      <ApplyLeadModal
+        college={college}
+        isOpen={isApplyModalOpen}
+        onClose={() => setIsApplyModalOpen(false)}
+      />
 
     </div>
   );

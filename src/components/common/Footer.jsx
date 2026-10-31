@@ -110,15 +110,16 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to={ROUTES.RECOMMENDATIONS} className="text-muted hover:text-indigo-600 font-semibold text-decoration-none">
+                  AI Admission Predictor 2026
+                </Link>
+              </li>
+              <li>
                 <Link to={ROUTES.RANKINGS} className="text-muted hover:text-indigo-600 font-semibold text-decoration-none">
                   NIRF & QS Rankings
                 </Link>
               </li>
-              <li>
-                <Link to={ROUTES.RECOMMENDATIONS} className="text-muted hover:text-indigo-600 font-semibold text-decoration-none">
-                  AI Admission Predictor
-                </Link>
-              </li>
+
               <li>
                 <Link to={ROUTES.COMPARE} className="text-muted hover:text-indigo-600 font-semibold text-decoration-none">
                   College Comparison Tool

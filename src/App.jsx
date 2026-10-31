@@ -6,6 +6,7 @@ import { AuthProvider } from './context/AuthContext';
 import { ComparisonProvider } from './context/ComparisonContext';
 import { SavedCollegesProvider } from './context/SavedCollegesContext';
 import { AppRoutes } from './routes/AppRoutes';
+import { AICounselorWidget } from './components/features/ai/AICounselorWidget';
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
           <ComparisonProvider>
             <SavedCollegesProvider>
               <AppRoutes />
+              <AICounselorWidget />
               <Toaster
                 position="top-right"
                 toastOptions={{

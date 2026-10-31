@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FiSliders, FiCheckCircle, FiTrendingUp, FiAward, FiArrowRight, FiCheck, FiPieChart, FiZap, FiTarget } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import { Button } from '../ui/Button';
 
 export const SmartHero = () => {
+  const navigate = useNavigate();
   const [score, setScore] = useState('98.4');
   const [exam, setExam] = useState('JEE Main');
   const [category, setCategory] = useState('General');
@@ -11,7 +13,7 @@ export const SmartHero = () => {
 
   const handleCalculate = (e) => {
     e.preventDefault();
-    setIsCalculated(true);
+    navigate('/recommendations');
   };
 
   return (
@@ -31,7 +33,7 @@ export const SmartHero = () => {
               <div className="d-inline-flex items-center gap-2 px-3.5 py-1.5 rounded-pill bg-indigo-50 border border-indigo-200/80 text-indigo-700 text-xs font-bold uppercase tracking-wider shadow-xs">
                 <span className="w-2 h-2 rounded-circle bg-emerald-500 animate-pulse" />
                 <FiSliders className="w-4 h-4 text-indigo-600" />
-                <span>AI Admission Predictor Engine 2026</span>
+                <span>Admission Insights Engine 2026</span>
               </div>
 
               {/* H1 Title */}
@@ -41,7 +43,7 @@ export const SmartHero = () => {
 
               {/* Lead Subtitle */}
               <p className="text-secondary text-base leading-relaxed mb-4">
-                Input your entrance test percentile and reservation category. Our AI algorithm analyzes 5 years of JoSAA & NEET closing ranks to estimate your exact admission probability.
+                Input your entrance test percentile and reservation category. Our algorithm analyzes 5 years of JoSAA & NEET closing ranks to estimate your exact admission probability.
               </p>
 
               {/* Interactive Predictor Form Card */}

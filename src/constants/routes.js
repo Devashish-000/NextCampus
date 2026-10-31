@@ -41,10 +41,10 @@ export const ROUTES = {
 
 export const NAV_LINKS = [
   { name: 'Colleges', path: ROUTES.COLLEGES },
+  { name: 'AI Predictor', path: ROUTES.RECOMMENDATIONS },
   { name: 'Rankings', path: ROUTES.RANKINGS },
   { name: 'Placements', path: ROUTES.PLACEMENTS },
   { name: 'Scholarships', path: ROUTES.SCHOLARSHIPS },
   { name: 'Reviews', path: ROUTES.REVIEWS },
-  { name: 'AI Predictor', path: ROUTES.RECOMMENDATIONS, badge: 'AI' },
   { name: 'Compare', path: ROUTES.COMPARE },
 ];

@@ -22,6 +22,26 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Add a new review
+router.post('/', async (req, res) => {
+  try {
+    const { college, author, rating, pros, cons, status } = req.body;
+    const newReview = new Review({
+      college: college || 'General University',
+      author: author || 'Student',
+      rating: Number(rating) || 4.5,
+      pros: pros || '',
+      cons: cons || '',
+      status: status || 'PENDING',
+      date: new Date().toISOString().split('T')[0],
+    });
+    const saved = await newReview.save();
+    res.status(201).json(saved);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 // Update review status
 router.put('/:id', async (req, res) => {
   try {

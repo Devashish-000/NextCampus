@@ -11,10 +11,10 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   }
 
   return (
-    <div className="flex items-center justify-between border-t border-gray-200 dark:border-slate-800 pt-6 mt-8">
-      <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
-        Page <span className="font-bold text-gray-900 dark:text-white">{currentPage}</span> of{' '}
-        <span className="font-bold text-gray-900 dark:text-white">{totalPages}</span>
+    <div className="flex items-center justify-between border-t border-gray-200 pt-6 mt-8">
+      <p className="text-xs font-medium text-gray-500">
+        Page <span className="font-bold text-gray-900">{currentPage}</span> of{' '}
+        <span className="font-bold text-gray-900">{totalPages}</span>
       </p>
 
       <div className="flex items-center gap-2">
@@ -36,7 +36,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }) => {
               className={`w-8 h-8 rounded-lg text-xs font-bold transition-colors ${
                 currentPage === p
                   ? 'bg-indigo-600 text-white shadow-sm'
-                  : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800'
+                  : 'text-gray-600 hover:bg-gray-100'
               }`}
             >
               {p}

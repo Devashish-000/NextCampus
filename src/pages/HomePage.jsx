@@ -30,8 +30,8 @@ export const HomePage = () => {
 
   const faqs = [
     {
-      q: 'How does the AI Admission Match Predictor calculate cutoff probabilities?',
-      a: 'Our AI engine analyzes past 5 years of JoSAA, NEET, CAT, and State Counseling closing ranks alongside seat capacities, category cutoffs, and applicant volume to estimate admission probabilities with up to 98% accuracy.',
+      q: 'How are the admission insights and cutoff trends calculated?',
+      a: 'We analyze the past 5 years of JoSAA, NEET, CAT, and State Counseling closing ranks alongside seat capacities and category cutoffs to provide accurate admission insights.',
     },
     {
       q: 'Are NIRF Rankings and placement packages verified?',
@@ -42,8 +42,8 @@ export const HomePage = () => {
       a: 'Yes! Click the "Compare" button on any college card to add up to 4 institutes into your comparison matrix for side-by-side analysis of fees, ranks, cutoffs, and amenities.',
     },
     {
-      q: 'Is NextCampus free for students?',
-      a: 'Yes, discovering colleges, using the AI predictor, reading verified student reviews, and saving shortlists is 100% free for students.',
+      q: 'Is this platform free for students?',
+      a: 'Yes, discovering colleges, reading verified student reviews, and saving shortlists is 100% free for students.',
     },
   ];
 

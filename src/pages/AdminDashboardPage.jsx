@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../services/axiosInstance';
 import { MOCK_REVIEWS } from '../mocks/reviewsData';
 import { FiUsers, FiAward, FiFileText, FiPlus, FiShield, FiTrash2, FiEdit2, FiTrendingUp } from 'react-icons/fi';
 import { CollegeModal } from '../components/admin/CollegeModal';
@@ -14,8 +14,9 @@ export const AdminDashboardPage = () => {
   // Fetch colleges from Backend
   const fetchColleges = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:5000/api/colleges');
-      setColleges(response.data);
+      const response = await axiosInstance.get('/colleges');
+      const list = Array.isArray(response.data) ? response.data : (response.data?.data || []);
+      setColleges([...list].reverse());
     } catch (error) {
       toast.error('Failed to fetch colleges from Database!');
       console.error(error);
@@ -42,7 +43,7 @@ export const AdminDashboardPage = () => {
   const handleDeleteClick = async (id) => {
     if (window.confirm('Are you sure you want to delete this college?')) {
       try {
-        await axios.delete(`http://127.0.0.1:5000/api/colleges/${id}`);
+        await axiosInstance.delete(`/colleges/${id}`);
         toast.success('College deleted successfully');
         setColleges(colleges.filter(c => c._id !== id));
       } catch (error) {
@@ -56,13 +57,15 @@ export const AdminDashboardPage = () => {
     try {
       if (editingCollege) {
         // Update existing college
-        const response = await axios.put(`http://127.0.0.1:5000/api/colleges/${editingCollege._id}`, collegeData);
-        setColleges(colleges.map(c => c._id === editingCollege._id ? response.data : c));
+        const response = await axiosInstance.put(`/colleges/${editingCollege._id}`, collegeData);
+        const updated = response.data?.data || response.data;
+        setColleges(colleges.map(c => c._id === editingCollege._id ? updated : c));
         toast.success('College updated successfully');
       } else {
         // Create new college
-        const response = await axios.post('http://127.0.0.1:5000/api/colleges', collegeData);
-        setColleges([...colleges, response.data]);
+        const response = await axiosInstance.post('/colleges', collegeData);
+        const created = response.data?.data || response.data;
+        setColleges([created, ...colleges]);
         toast.success('College added successfully');
       }
       setIsModalOpen(false);

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { authService } from '../services/authService';
+import { getStorageItem } from '../utils/storage';
 import toast from 'react-hot-toast';
 
 const AuthContext = createContext();
@@ -9,11 +10,31 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const currentUser = authService.getCurrentUser();
-    if (currentUser) {
-      setUser(currentUser);
-    }
-    setLoading(false);
+    const initializeAuth = async () => {
+      const cachedUser = authService.getCurrentUser();
+      const token = getStorageItem('auth_token', null);
+
+      if (cachedUser) {
+        setUser(cachedUser);
+      }
+
+      if (token) {
+        try {
+          const freshUser = await authService.getProfile();
+          if (freshUser) {
+            setUser(freshUser);
+          } else if (!cachedUser) {
+            setUser(null);
+          }
+        } catch (err) {
+          console.warn('Session verification error:', err.message);
+        }
+      }
+
+      setLoading(false);
+    };
+
+    initializeAuth();
   }, []);
 
   const login = async (credentials) => {
@@ -23,7 +44,8 @@ export const AuthProvider = ({ children }) => {
       toast.success(`Welcome back, ${res.user.fullName}!`);
       return res.user;
     } catch (err) {
-      toast.error(err.message || 'Login failed. Check credentials.');
+      const msg = err.response?.data?.message || err.message || 'Login failed. Check credentials.';
+      toast.error(msg);
       throw err;
     }
   };
@@ -35,7 +57,8 @@ export const AuthProvider = ({ children }) => {
       toast.success('Account created successfully!');
       return res.user;
     } catch (err) {
-      toast.error(err.message || 'Registration failed.');
+      const msg = err.response?.data?.message || err.message || 'Registration failed.';
+      toast.error(msg);
       throw err;
     }
   };

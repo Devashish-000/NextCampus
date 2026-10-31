@@ -18,10 +18,10 @@ export const ScholarshipsPage = () => {
 
   const filteredScholarships = scholarships.filter((s) => {
     const matchesType = selectedType === 'All' || s.type === selectedType;
-    const matchesSearch =
-      s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      s.provider.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      s.eligibility.toLowerCase().includes(searchQuery.toLowerCase());
+    const titleMatch = (s.title || s.name || '').toLowerCase().includes(searchQuery.toLowerCase());
+    const providerMatch = (s.provider || '').toLowerCase().includes(searchQuery.toLowerCase());
+    const eligibilityMatch = (s.eligibility || '').toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = titleMatch || providerMatch || eligibilityMatch;
     return matchesType && matchesSearch;
   });
 
@@ -99,7 +99,7 @@ export const ScholarshipsPage = () => {
 
                   {/* Title & Provider */}
                   <div>
-                    <h3 className="h5 font-extrabold text-dark mb-1">{s.title}</h3>
+                    <h3 className="h5 font-extrabold text-dark mb-1">{s.title || s.name}</h3>
                     <span className="text-xs font-bold text-indigo-600 d-block">{s.provider}</span>
                   </div>
 
@@ -109,17 +109,17 @@ export const ScholarshipsPage = () => {
                       <FiDollarSign className="text-emerald-400" /> GRANT AMOUNT
                     </span>
                     <span className="text-lg font-black text-emerald-400 block drop-shadow-sm">
-                      {s.amount}
+                      {s.amount ? (s.amount.toString().includes('₹') ? s.amount : `₹${s.amount}`) : 'TBD'}
                     </span>
                   </div>
 
                   {/* Eligibility & Stream Details */}
                   <div className="space-y-1 pt-1">
                     <p className="text-xs text-slate-700 font-semibold mb-0 leading-relaxed">
-                      <strong className="text-dark font-extrabold">Eligibility:</strong> {s.eligibility}
+                      <strong className="text-dark font-extrabold">Eligibility:</strong> {s.eligibility || 'Open to all eligible students based on criteria.'}
                     </p>
                     <p className="text-[11px] text-muted mb-0">
-                      <strong className="text-dark font-bold">Stream:</strong> {s.stream}
+                      <strong className="text-dark font-bold">Stream:</strong> {s.stream || 'Any Stream'}
                     </p>
                   </div>
                 </div>

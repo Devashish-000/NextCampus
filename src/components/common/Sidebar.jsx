@@ -11,8 +11,8 @@ export const Sidebar = () => {
 
   const studentLinks = [
     { name: 'Overview', path: ROUTES.STUDENT_DASHBOARD, icon: FiGrid },
-    { name: 'Saved Colleges', path: ROUTES.SAVED_COLLEGES, icon: FiBookmark },
     { name: 'AI Predictor', path: ROUTES.RECOMMENDATIONS, icon: FiSliders },
+    { name: 'Saved Colleges', path: ROUTES.SAVED_COLLEGES, icon: FiBookmark },
     { name: 'My Profile', path: ROUTES.PROFILE, icon: FiUser },
     { name: 'Notifications', path: ROUTES.NOTIFICATIONS, icon: FiBell },
     { name: 'Account Settings', path: ROUTES.SETTINGS, icon: FiShield },
@@ -23,7 +23,6 @@ export const Sidebar = () => {
     { name: 'Manage Students', path: ROUTES.ADMIN_STUDENTS, icon: FiUsers },
     { name: 'Scholarships', path: ROUTES.ADMIN_SCHOLARSHIPS, icon: FiBookmark },
     { name: 'Placements', path: ROUTES.ADMIN_PLACEMENTS, icon: FiBarChart2 },
-    { name: 'AI Engine Data', path: ROUTES.ADMIN_PREDICTOR, icon: FiSliders },
     { name: 'Review Moderation', path: ROUTES.ADMIN_REVIEWS, icon: FiFileText },
     { name: 'Notifications', path: ROUTES.ADMIN_NOTIFICATIONS, icon: FiBell },
     { name: 'System Settings', path: ROUTES.SETTINGS, icon: FiShield },
@@ -95,7 +94,7 @@ export const Sidebar = () => {
             <h5 className="text-sm font-black text-emerald-900 mb-0">System Live</h5>
           </div>
           <p className="text-[11px] text-emerald-800/80 font-bold mb-0 leading-relaxed">
-            Connected to Cloud MongoDB. AI prediction engine is running optimally.
+            Connected to Cloud MongoDB. Services are running optimally.
           </p>
         </div>
       </div>

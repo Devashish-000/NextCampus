@@ -1,14 +1,36 @@
 import React, { useState } from 'react';
-import { FiBell, FiCheckCircle, FiAlertCircle, FiZap, FiAward, FiBookOpen, FiArrowRight, FiClock } from 'react-icons/fi';
+import { FiBell, FiCheckCircle, FiAlertCircle, FiZap, FiAward, FiBookOpen, FiArrowRight, FiClock, FiCreditCard, FiCheck } from 'react-icons/fi';
+import { HiSparkles } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 
 export const NotificationsPage = () => {
   const [filter, setFilter] = useState('All');
+  const [markedRead, setMarkedRead] = useState(false);
 
   const notifications = [
     {
       id: 1,
+      title: 'Application Fee Payment Confirmed (₹750 Paid)',
+      time: 'Just now',
+      category: 'Payments',
+      type: 'payment',
+      content: 'Your application processing token for IIT Bombay (B.Tech CSE) has been confirmed. GST Tax Invoice receipt generated successfully.',
+      actionLabel: 'View in Student Cockpit',
+      actionPath: ROUTES.STUDENT_DASHBOARD,
+    },
+    {
+      id: 2,
+      title: 'NextCampus 24/7 AI Mentor Engine Active',
+      time: '1 hour ago',
+      category: 'AI Engine',
+      type: 'ai',
+      content: 'The 24/7 AI College Counselor is live! Ask real-time questions about JoSAA choice locking, seat float/freeze rules, and cutoff predictions.',
+      actionLabel: 'Launch AI Predictor',
+      actionPath: ROUTES.RECOMMENDATIONS,
+    },
+    {
+      id: 3,
       title: 'JoSAA Counselling Round 1 Seat Allotment Live',
       time: '2 hours ago',
       category: 'JoSAA / NEET',
@@ -18,7 +40,7 @@ export const NotificationsPage = () => {
       actionPath: ROUTES.RANKINGS,
     },
     {
-      id: 2,
+      id: 4,
       title: 'Reliance Foundation Scholarship Deadline Approaching',
       time: '1 day ago',
       category: 'Scholarships',
@@ -28,17 +50,7 @@ export const NotificationsPage = () => {
       actionPath: ROUTES.SCHOLARSHIPS,
     },
     {
-      id: 3,
-      title: 'AI Predictor Model Updated for JEE Advanced 2026',
-      time: '3 days ago',
-      category: 'AI Engine',
-      type: 'ai',
-      content: 'Your saved profile score (98.4%ile) qualifies for 8 high-probability tier-1 colleges across IITs, NITs, and IIITs.',
-      actionLabel: 'Run AI Prediction',
-      actionPath: ROUTES.RECOMMENDATIONS,
-    },
-    {
-      id: 4,
+      id: 5,
       title: 'NEET-UG State Merit List 2026 Released',
       time: '4 days ago',
       category: 'JoSAA / NEET',
@@ -48,11 +60,11 @@ export const NotificationsPage = () => {
       actionPath: ROUTES.COLLEGES,
     },
     {
-      id: 5,
+      id: 6,
       title: 'BITS Pilani Practice School Internship Drive Started',
       time: '5 days ago',
       category: 'Placement Feed',
-      type: 'ai',
+      type: 'placement',
       content: 'Over 180 corporate partners launched pre-placement offers (PPO) with average packages touching ₹20.8 LPA.',
       actionLabel: 'View Placement Data',
       actionPath: ROUTES.PLACEMENTS,
@@ -64,8 +76,10 @@ export const NotificationsPage = () => {
     : notifications.filter((n) => n.category === filter);
 
   const getIconStyle = (type) => {
+    if (type === 'payment') return { bg: 'bg-gradient-to-br from-emerald-500 to-teal-700 text-white', icon: FiCreditCard };
+    if (type === 'ai') return { bg: 'bg-gradient-to-br from-purple-500 to-indigo-700 text-white', icon: FiSparkles };
     if (type === 'urgent') return { bg: 'bg-gradient-to-br from-rose-500 to-rose-700 text-white', icon: FiAlertCircle };
-    if (type === 'scholarship') return { bg: 'bg-gradient-to-br from-emerald-500 to-emerald-700 text-white', icon: FiAward };
+    if (type === 'scholarship') return { bg: 'bg-gradient-to-br from-amber-500 to-orange-600 text-white', icon: FiAward };
     return { bg: 'bg-gradient-to-br from-indigo-500 to-purple-700 text-white', icon: FiZap };
   };
 
@@ -89,7 +103,7 @@ export const NotificationsPage = () => {
 
         {/* Filter Pills Stage */}
         <div className="d-flex flex-wrap items-center justify-center gap-2 max-w-2xl mx-auto">
-          {['All', 'JoSAA / NEET', 'Scholarships', 'AI Engine', 'Placement Feed'].map((cat) => (
+          {['All', 'Payments', 'JoSAA / NEET', 'AI Engine', 'Scholarships', 'Placement Feed'].map((cat) => (
             <button
               key={cat}
               type="button"
@@ -105,6 +119,24 @@ export const NotificationsPage = () => {
           ))}
         </div>
 
+        {/* Action Bar */}
+        <div className="d-flex items-center justify-between max-w-3xl mx-auto px-2">
+          <span className="text-xs font-bold text-slate-500">
+            {markedRead ? '✅ All caught up! 0 unread alerts.' : `Showing ${filteredNotifications.length} updates`}
+          </span>
+          <button
+            type="button"
+            onClick={() => {
+              setMarkedRead(!markedRead);
+              toast.success(markedRead ? 'Notifications marked as unread' : 'All notifications marked as read!');
+            }}
+            className="btn btn-sm btn-light border border-slate-200 text-xs font-bold text-indigo-600 hover:bg-indigo-50 hover:text-indigo-800 rounded-xl px-3 py-1.5 d-flex items-center gap-1.5 shadow-2xs"
+          >
+            <FiCheck className="w-3.5 h-3.5" />
+            <span>{markedRead ? 'Mark as Unread' : 'Mark all as read'}</span>
+          </button>
+        </div>
+
         {/* Notifications Feed Grid Stage */}
         <div className="max-w-3xl mx-auto space-y-4">
           {filteredNotifications.map((n) => {
@@ -113,11 +145,16 @@ export const NotificationsPage = () => {
             return (
               <div
                 key={n.id}
-                className="saas-card p-4 p-md-5 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-xl rounded-3xl d-flex items-start gap-4 saas-card-hover"
+                className={`saas-card p-4 p-md-5 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-xl rounded-3xl d-flex items-start gap-4 saas-card-hover transition-opacity ${
+                  markedRead ? 'opacity-85' : ''
+                }`}
               >
                 {/* Icon Box */}
-                <div className={`w-12 h-12 rounded-2xl ${iconObj.bg} d-flex items-center justify-center font-black text-xl shrink-0 shadow-md`}>
+                <div className={`w-12 h-12 rounded-2xl ${iconObj.bg} d-flex items-center justify-center font-black text-xl shrink-0 shadow-md relative`}>
                   <Icon className="w-6 h-6" />
+                  {!markedRead && (
+                    <span className="position-absolute -top-1 -right-1 w-3 h-3 bg-indigo-600 rounded-full border-2 border-white"></span>
+                  )}
                 </div>
 
                 {/* Content Area (100% Crisp Visible Dark Text) */}

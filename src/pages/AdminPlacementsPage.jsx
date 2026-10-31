@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiPlus, FiTrash2, FiBriefcase, FiTrendingUp } from 'react-icons/fi';
 import toast from 'react-hot-toast';
-import axios from 'axios';
+import axiosInstance from '../services/axiosInstance';
 
 export const AdminPlacementsPage = () => {
   const [recruiters, setRecruiters] = useState([]);
@@ -17,14 +17,14 @@ export const AdminPlacementsPage = () => {
   // Fetch data
   const fetchData = async () => {
     try {
-      const res = await axios.get('http://127.0.0.1:5000/api/placements');
+      const res = await axiosInstance.get('/placements');
       if (res.data) {
         setMetrics({
-          highestOffer: res.data.highestOffer,
-          averageSalary: res.data.averageSalary,
-          placementRate: res.data.placementRate
+          highestOffer: res.data.highestOffer || '',
+          averageSalary: res.data.averageSalary || '',
+          placementRate: res.data.placementRate || ''
         });
-        setRecruiters(res.data.recruiters);
+        setRecruiters(res.data.recruiters || []);
       }
     } catch (err) {
       toast.error('Failed to fetch placements data');
@@ -38,7 +38,7 @@ export const AdminPlacementsPage = () => {
   // Save overall metrics
   const handleSaveChanges = async () => {
     try {
-      await axios.put('http://127.0.0.1:5000/api/placements', metrics);
+      await axiosInstance.put('/placements', metrics);
       toast.success('Metrics saved successfully!');
     } catch (err) {
       toast.error('Failed to save metrics');
@@ -49,8 +49,10 @@ export const AdminPlacementsPage = () => {
   const handleAddRecruiter = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://127.0.0.1:5000/api/placements/recruiters', newRecruiter);
-      setRecruiters(res.data.recruiters);
+      const res = await axiosInstance.post('/placements/recruiters', newRecruiter);
+      if (res.data?.recruiters) {
+        setRecruiters(res.data.recruiters);
+      }
       setIsModalOpen(false);
       setNewRecruiter({ company: '', avgPackage: '', totalOffers: '' });
       toast.success('Recruiter added');
@@ -63,8 +65,10 @@ export const AdminPlacementsPage = () => {
   const handleDeleteRecruiter = async (id) => {
     if (window.confirm('Are you sure you want to remove this recruiter?')) {
       try {
-        const res = await axios.delete(`http://127.0.0.1:5000/api/placements/recruiters/${id}`);
-        setRecruiters(res.data.recruiters);
+        const res = await axiosInstance.delete(`/placements/recruiters/${id}`);
+        if (res.data?.recruiters) {
+          setRecruiters(res.data.recruiters);
+        }
         toast.success('Recruiter removed');
       } catch (err) {
         toast.error('Failed to remove recruiter');

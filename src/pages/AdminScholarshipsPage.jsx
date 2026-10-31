@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiPlus, FiEdit2, FiTrash2, FiSearch, FiDollarSign } from 'react-icons/fi';
 import toast from 'react-hot-toast';
-import axios from 'axios';
+import axiosInstance from '../services/axiosInstance';
 
 export const AdminScholarshipsPage = () => {
   const [scholarships, setScholarships] = useState([]);
@@ -21,8 +21,9 @@ export const AdminScholarshipsPage = () => {
   // Fetch Scholarships
   const fetchScholarships = async () => {
     try {
-      const res = await axios.get('http://127.0.0.1:5000/api/scholarships');
-      setScholarships(res.data);
+      const res = await axiosInstance.get('/scholarships');
+      const data = Array.isArray(res.data) ? res.data : (res.data?.data || []);
+      setScholarships(data);
     } catch (err) {
       toast.error('Failed to fetch scholarships');
       console.error(err);
@@ -66,7 +67,7 @@ export const AdminScholarshipsPage = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this scholarship?')) {
       try {
-        await axios.delete(`http://127.0.0.1:5000/api/scholarships/${id}`);
+        await axiosInstance.delete(`/scholarships/${id}`);
         setScholarships(scholarships.filter(s => s._id !== id));
         toast.success('Scholarship removed');
       } catch (err) {
@@ -80,13 +81,15 @@ export const AdminScholarshipsPage = () => {
     try {
       if (editingScholarship) {
         // Update
-        const res = await axios.put(`http://127.0.0.1:5000/api/scholarships/${editingScholarship._id}`, formData);
-        setScholarships(scholarships.map(s => s._id === editingScholarship._id ? res.data : s));
+        const res = await axiosInstance.put(`/scholarships/${editingScholarship._id}`, formData);
+        const updated = res.data?.data || res.data;
+        setScholarships(scholarships.map(s => s._id === editingScholarship._id ? updated : s));
         toast.success('Scholarship updated successfully');
       } else {
         // Create
-        const res = await axios.post('http://127.0.0.1:5000/api/scholarships', formData);
-        setScholarships([res.data, ...scholarships]);
+        const res = await axiosInstance.post('/scholarships', formData);
+        const created = res.data?.data || res.data;
+        setScholarships([created, ...scholarships]);
         toast.success('Scholarship added successfully');
       }
       setIsModalOpen(false);

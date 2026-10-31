@@ -6,10 +6,10 @@ export const Features = () => {
   const featuresList = [
     {
       icon: FiSliders,
-      tag: 'AI ENGINE',
+      tag: 'AI PREDICTOR ENGINE',
       badgeColor: 'bg-indigo-600 text-white shadow-indigo-500/30',
-      title: 'AI Admission Match Engine',
-      description: 'Calculates your admission probability for tier-1 IITs, NITs, IIMs, and Medical institutes based on entrance test scores & budget.',
+      title: 'AI Admission Match & Cutoff Predictor',
+      description: 'Calculates your admission probability for tier-1 IITs, NITs, and Medical colleges based on entrance percentiles, category quotas, and fee budget.',
     },
     {
       icon: FiBarChart2,

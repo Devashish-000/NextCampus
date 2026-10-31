@@ -9,20 +9,25 @@ export const collegeService = {
     try {
       const response = await axiosInstance.get('/colleges');
       // Format backend _id to id and map schema keys
-      dbColleges = response.data.map(c => ({
-        ...c, 
-        id: c._id, 
-        highestSalary: c.highestPackage, 
-        avgSalary: c.avgPackage,
-        image: c.logo || 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=800&q=80',
-        location: c.city ? `${c.city}, ${c.state}` : c.state
-      }));
+      dbColleges = response.data.map(c => {
+        const isPlaceholder = !c.logo || c.logo.includes('placeholder.com');
+        const defaultImg = 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=800&q=80';
+        return {
+          ...c, 
+          id: c._id, 
+          highestSalary: c.highestPackage, 
+          avgSalary: c.avgPackage,
+          logo: isPlaceholder ? defaultImg : c.logo,
+          image: isPlaceholder ? defaultImg : c.logo,
+          location: c.city ? `${c.city}, ${c.state}` : (c.state || 'India')
+        };
+      });
     } catch (error) {
       console.warn('Backend not running, falling back to mock data only.');
     }
 
-    // Merge mock data with real DB data so the site doesn't look empty!
-    let filtered = [...dbColleges, ...ALL_MOCK_COLLEGES];
+    // Combine newly added DB colleges (newest first) with mock data
+    let filtered = [...dbColleges.reverse(), ...ALL_MOCK_COLLEGES];
 
     // Search query
     if (params.search) {
@@ -124,7 +129,28 @@ export const collegeService = {
   },
 
   getFeaturedColleges: async () => {
-    await mockApiDelay(300);
-    return ALL_MOCK_COLLEGES.filter((c) => c.featured);
+    let dbColleges = [];
+    try {
+      const response = await axiosInstance.get('/colleges');
+      dbColleges = response.data.map(c => {
+        const isPlaceholder = !c.logo || c.logo.includes('placeholder.com');
+        const defaultImg = 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=800&q=80';
+        return {
+          ...c, 
+          id: c._id, 
+          highestSalary: c.highestPackage, 
+          avgSalary: c.avgPackage,
+          logo: isPlaceholder ? defaultImg : c.logo,
+          image: isPlaceholder ? defaultImg : c.logo,
+          location: c.city ? `${c.city}, ${c.state}` : (c.state || 'India')
+        };
+      });
+    } catch (error) {
+      console.warn('Backend not running, falling back to mock data only.');
+    }
+    
+    // Combine newly added DB colleges with the featured mock colleges
+    const featuredMock = ALL_MOCK_COLLEGES.filter((c) => c.featured);
+    return [...dbColleges, ...featuredMock];
   }
 };

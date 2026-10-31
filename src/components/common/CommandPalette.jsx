@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiSearch, FiX, FiArrowRight, FiBookOpen, FiAward, FiSliders } from 'react-icons/fi';
+import { FiSearch, FiX, FiArrowRight, FiBookOpen, FiAward, FiSliders, FiMessageSquare } from 'react-icons/fi';
 import { ALL_MOCK_COLLEGES } from '../../mocks/collegesData';
 import { ROUTES } from '../../constants/routes';
 
@@ -36,8 +36,9 @@ export const CommandPalette = ({ isOpen, onClose }) => {
 
   const quickLinks = [
     { label: 'Explore All Colleges', path: ROUTES.COLLEGES, icon: FiBookOpen, desc: 'Search 50+ NIRF verified institutes' },
+    { label: 'AI Admission Predictor 2026', path: ROUTES.RECOMMENDATIONS, icon: FiSliders, desc: 'Calculate JoSAA/NEET odds & tiers' },
     { label: 'NIRF Official Rankings 2026', path: ROUTES.RANKINGS, icon: FiAward, desc: 'Top podium universities & metrics' },
-    { label: 'AI Admission Match Predictor', path: ROUTES.RECOMMENDATIONS, icon: FiSliders, desc: 'JoSAA seat odds algorithm' },
+    { label: 'View Verified Reviews', path: ROUTES.REVIEWS, icon: FiMessageSquare, desc: 'Authentic student feedback & ratings' },
   ];
 
   return (

@@ -1,13 +1,20 @@
-import { mockApiDelay } from './axiosInstance';
+import axiosInstance, { mockApiDelay } from './axiosInstance';
 import { MOCK_SCHOLARSHIPS } from '../mocks/scholarshipsData';
 import { MOCK_PLACEMENT_STATS } from '../mocks/placementsData';
 import { MOCK_RANKINGS_LIST } from '../mocks/rankingsData';
 
 export const scholarshipService = {
   getScholarships: async (streamFilter = '') => {
-    await mockApiDelay(350);
-    if (!streamFilter || streamFilter === 'All') return MOCK_SCHOLARSHIPS;
-    return MOCK_SCHOLARSHIPS.filter((s) => s.stream.toLowerCase().includes(streamFilter.toLowerCase()));
+    try {
+      const response = await axiosInstance.get('/scholarships');
+      const liveData = response.data;
+      if (!streamFilter || streamFilter === 'All') return liveData;
+      return liveData.filter((s) => s.stream && s.stream.toLowerCase().includes(streamFilter.toLowerCase()));
+    } catch (err) {
+      console.warn("Falling back to mock scholarships", err);
+      if (!streamFilter || streamFilter === 'All') return MOCK_SCHOLARSHIPS;
+      return MOCK_SCHOLARSHIPS.filter((s) => s.stream && s.stream.toLowerCase().includes(streamFilter.toLowerCase()));
+    }
   }
 };
 

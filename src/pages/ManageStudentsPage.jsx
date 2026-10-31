@@ -1,17 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FiUsers, FiUserCheck, FiUserX, FiSearch } from 'react-icons/fi';
+import axiosInstance from '../services/axiosInstance';
+
+const INITIAL_DEMO_STUDENTS = [
+  { id: 1, name: 'Aarav Sharma', email: 'aarav@example.com', stream: 'Engineering', status: 'Active', joined: '2025-01-15' },
+  { id: 2, name: 'Ananya Iyer', email: 'ananya@example.com', stream: 'Management', status: 'Active', joined: '2025-02-15' },
+  { id: 3, name: 'Rahul Verma', email: 'rahul@example.com', stream: 'Medical', status: 'Inactive', joined: '2025-03-01' },
+  { id: 4, name: 'Priya Patel', email: 'priya@example.com', stream: 'Law', status: 'Active', joined: '2025-04-10' },
+];
 
 export const ManageStudentsPage = () => {
-  // Mock student data
-  const [students] = useState([
-    { id: 1, name: 'Aarav Sharma', email: 'aarav@example.com', stream: 'Engineering', status: 'Active', joined: '2025-01-15' },
-    { id: 2, name: 'Ananya Iyer', email: 'ananya@example.com', stream: 'Management', status: 'Active', joined: '2025-02-15' },
-    { id: 3, name: 'Rahul Verma', email: 'rahul@example.com', stream: 'Medical', status: 'Inactive', joined: '2025-03-01' },
-    { id: 4, name: 'Priya Patel', email: 'priya@example.com', stream: 'Law', status: 'Active', joined: '2025-04-10' },
-  ]);
-
+  const [students, setStudents] = useState(INITIAL_DEMO_STUDENTS);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        setIsLoading(true);
+        const res = await axiosInstance.get('/auth/users?role=student');
+        const userList = res.data?.users || (Array.isArray(res.data) ? res.data : []);
+        if (userList.length > 0) {
+          const mapped = userList.map((u, idx) => ({
+            id: u._id || idx + 1,
+            name: u.fullName || 'Student',
+            email: u.email,
+            stream: u.targetStream || u.targetExam || 'Engineering',
+            status: 'Active',
+            joined: u.createdAt ? new Date(u.createdAt).toISOString().split('T')[0] : '2026-01-15',
+            phone: u.phone || '',
+          }));
+          setStudents(mapped);
+        }
+      } catch (err) {
+        // Fallback gracefully to demo list
+        console.warn('Could not fetch registered students, displaying cached demo roster:', err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchStudents();
+  }, []);
 
   // Live filter logic
   const filteredStudents = students.filter(student => 
@@ -163,6 +194,12 @@ export const ManageStudentsPage = () => {
                     <span className="text-gray-500 font-bold text-xs uppercase">Target Stream</span>
                     <span className="text-dark font-semibold text-sm">{selectedStudent.stream}</span>
                   </div>
+                  {selectedStudent.phone && (
+                    <div className="d-flex justify-content-between border-b border-gray-200 pb-2">
+                      <span className="text-gray-500 font-bold text-xs uppercase">Phone</span>
+                      <span className="text-dark font-semibold text-sm">{selectedStudent.phone}</span>
+                    </div>
+                  )}
                   <div className="d-flex justify-content-between">
                     <span className="text-gray-500 font-bold text-xs uppercase">Joined Date</span>
                     <span className="text-dark font-semibold text-sm">{selectedStudent.joined}</span>

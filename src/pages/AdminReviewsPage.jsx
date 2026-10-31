@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiCheck, FiX, FiTrash2, FiStar, FiFilter, FiFileText } from 'react-icons/fi';
 import toast from 'react-hot-toast';
-import axios from 'axios';
+import axiosInstance from '../services/axiosInstance';
 
 export const AdminReviewsPage = () => {
   const [reviews, setReviews] = useState([]);
@@ -9,8 +9,9 @@ export const AdminReviewsPage = () => {
 
   const fetchReviews = async () => {
     try {
-      const res = await axios.get('http://127.0.0.1:5000/api/reviews');
-      setReviews(res.data);
+      const res = await axiosInstance.get('/reviews');
+      const data = Array.isArray(res.data) ? res.data : (res.data?.data || []);
+      setReviews(data);
     } catch (err) {
       toast.error('Failed to fetch reviews');
     }
@@ -22,8 +23,9 @@ export const AdminReviewsPage = () => {
 
   const handleApprove = async (id) => {
     try {
-      const res = await axios.put(`http://127.0.0.1:5000/api/reviews/${id}`, { status: 'APPROVED' });
-      setReviews(reviews.map(r => r._id === id ? res.data : r));
+      const res = await axiosInstance.put(`/reviews/${id}`, { status: 'APPROVED' });
+      const updated = res.data?.data || res.data;
+      setReviews(reviews.map(r => r._id === id ? updated : r));
       toast.success('Review approved successfully!');
     } catch (err) {
       toast.error('Failed to approve review');
@@ -32,8 +34,9 @@ export const AdminReviewsPage = () => {
 
   const handleReject = async (id) => {
     try {
-      const res = await axios.put(`http://127.0.0.1:5000/api/reviews/${id}`, { status: 'REJECTED' });
-      setReviews(reviews.map(r => r._id === id ? res.data : r));
+      const res = await axiosInstance.put(`/reviews/${id}`, { status: 'REJECTED' });
+      const updated = res.data?.data || res.data;
+      setReviews(reviews.map(r => r._id === id ? updated : r));
       toast.error('Review rejected.');
     } catch (err) {
       toast.error('Failed to reject review');
@@ -43,7 +46,7 @@ export const AdminReviewsPage = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to permanently delete this review?')) {
       try {
-        await axios.delete(`http://127.0.0.1:5000/api/reviews/${id}`);
+        await axiosInstance.delete(`/reviews/${id}`);
         setReviews(reviews.filter(r => r._id !== id));
         toast.success('Review deleted permanently.');
       } catch (err) {
